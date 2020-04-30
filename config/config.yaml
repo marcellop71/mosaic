@@ -1,0 +1,11 @@
+config:
+  storage:
+    redis:
+      local0:
+        addr: "127.0.0.1:6379"
+        password: ""
+      azure0:
+        addr: "abe0.redis.cache.windows.net:6379"
+        password: "lSEFGdtKgZlQ9G+tHdCb2PW6ifkw0I1en56+IaivnKM="
+  active:
+    redis: "local0"

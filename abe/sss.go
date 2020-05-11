@@ -4,12 +4,11 @@ import (
   "math"
   "math/big"
 
-  log "github.com/unicredit/abe/log"
+  "github.com/unicredit/mosaic/abe/log"
 )
 
 // ap linear access policy encoded into a full matrix by row
-func encodeAccessPolicy(t *btree, c *int, ap *[][]int) {
-
+func btreeLabeling(t *btree, c *int) {
   if (*c == 0) {
     *c = 1
     t.v = []int{1}
@@ -18,26 +17,48 @@ func encodeAccessPolicy(t *btree, c *int, ap *[][]int) {
   internal := (t.child[0] != nil) && (t.child[1] != nil)
   if (internal == true) {
     if (t.label == "or") {
+      padWithZeros(&t.v, *c)
       t.child[0].v = t.v
       t.child[1].v = t.v
-      //padWithZeros(&t.child[0].v, *c)
-      //padWithZeros(&t.child[1].v, *c)
+      btreeLabeling(t.child[0], c)
+      btreeLabeling(t.child[1], c)
     }
     if (t.label == "and") {
       padWithZeros(&t.v, *c)
-      var zeros = make([]int, *c)
+      zeros := make([]int, len(t.v))
       t.child[0].v = append(t.v, 1)
       t.child[1].v = append(zeros, -1)
       *c = *c + 1
-    }
-    encodeAccessPolicy(t.child[0], c, ap)
-    encodeAccessPolicy(t.child[1], c, ap)
-  } else {
-    *ap = append(*ap, t.v)
-    for i := 0; i < len(*ap); i++ {
-      padWithZeros(&(*ap)[i], *c)
+      btreeLabeling(t.child[0], c)
+      btreeLabeling(t.child[1], c)
     }
   }
+}
+
+func btreeExtractLabelsOnLeaves(t *btree, ap *[][]int) {
+  internal := (t.child[0] != nil) && (t.child[1] != nil)
+  if (internal == true) {
+    log.Debug(">>> %s %d %d", t.label, t.child[0].v, t.child[1].v)
+    btreeExtractLabelsOnLeaves(t.child[0], ap)
+    btreeExtractLabelsOnLeaves(t.child[1], ap)
+  } else {
+    *ap = append(*ap, t.v)
+  }
+}
+
+func encodeAccessPolicy(t *btree) [][]int {
+  var c int
+  var aptmp [][]int
+  btreeLabeling(t, &c)
+  btreeExtractLabelsOnLeaves(t, &aptmp)
+  ap := make([][]int, len(aptmp))
+  for i := 0; i < len(aptmp); i++ {
+    ap[i] = make([]int, c)
+    for j := 0; j < len(aptmp[i]); j++ {
+      ap[i][j] = aptmp[i][j]
+    }
+  }
+  return ap
 }
 
 func computeShares(s []*big.Int, ap [][]int) []*big.Int {
@@ -57,7 +78,7 @@ func computeShares(s []*big.Int, ap [][]int) []*big.Int {
 }
 
 func computeCoefficients(ap [][]int) []int {
-  hap, u := HermiteNormalForm(ap)
+  hap, u := hermiteNormalForm(ap)
   log.Debug("HNF %d", hap)
   log.Debug("U %d", u)
 
@@ -158,7 +179,7 @@ func floor(a int, b int) int {
 }
 
 // matrix a m x n by columns
-func HermiteNormalForm(a [][]int) ([][]int, [][]int) {
+func hermiteNormalForm(a [][]int) ([][]int, [][]int) {
   a_ := clone(a)
 
   m := len(a_[0]); n := len(a_)

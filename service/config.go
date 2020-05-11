@@ -5,26 +5,37 @@ import (
 
   yaml "gopkg.in/yaml.v3"
 
-  log "github.com/unicredit/abe/log"
+  "github.com/unicredit/mosaic/abe/log"
 )
 
-type Redis struct {
-  Name string `yaml:"name"`
+type ArithmeticConf struct {
+  Curve string `yaml:"curve"`
+  Library string `yaml:"library"`
+}
+
+type RedisConf struct {
   Addr string `yaml:"addr"`
   Password string `yaml:"password"`
 }
 
-type Storage struct {
-  Redis map[string]Redis `yaml:"redis"`
+type LeveldbConf struct {
+  Name string `yaml:"name"`
 }
 
-type Active struct {
-  Redis string `yaml:"redis"`
+type StorageConf struct {
+  Redis map[string]RedisConf `yaml:"redis"`
+  Leveldb map[string]LeveldbConf `yaml:"leveldb"`
+}
+
+type ActiveConf struct {
+  Type string `yaml:"type"`
+  Label string `yaml:"label"`
 }
 
 type Config struct {
-  Storage Storage `yaml:"storage"`
-  Active Active `yaml:"active"`
+  Arithmetic ArithmeticConf `yaml:"arithmetic"`
+  Storage StorageConf `yaml:"storage"`
+  Active ActiveConf `yaml:"active"`
 }
 
 type Ext struct {
@@ -32,17 +43,14 @@ type Ext struct {
 }
 
 func ReadConfig(filename string) Ext {
-  log.Debug("reading config file")
   yamlFile, err := ioutil.ReadFile(filename)
   if err != nil {
     log.Panic("no config file")
-    panic(err)
   }
   var e Ext
   err = yaml.Unmarshal(yamlFile, &e)
   if err != nil {
     log.Panic("problem parsing config file")
-    panic(err)
   }
   return e
 }

@@ -3,65 +3,62 @@ package main
 import "C"
 
 import (
-  "fmt"
-
-  abe "github.com/unicredit/abe/abe"
+  "github.com/unicredit/mosaic/abe"
 )
 
-//export newRandomCurve
-func newRandomCurve(curveName *C.char) *C.char {
-  return C.CString(abe.NewRandomCurve(C.GoString(curveName)))
-}
-
 //export newRandomOrg
-func newRandomOrg(curve_json *C.char) *C.char {
-  return C.CString(abe.NewRandomOrg(C.GoString(curve_json)))
+func newRandomOrg(curveJson *C.char) *C.char {
+  return C.CString(abe.NewRandomOrgJson(C.GoString(curveJson)))
 }
 
 //export newRandomAuth
-func newRandomAuth(org_json *C.char) *C.char {
-  pub, prv := abe.NewRandomAuth(C.GoString(org_json))
-  return C.CString(fmt.Sprintf("%s|%s", pub, prv))
+func newRandomAuth(orgJson *C.char) *C.char {
+  return C.CString(abe.NewRandomAuthJson(C.GoString(orgJson)))
 }
 
 //export newRandomUserkey
-func newRandomUserkey(user *C.char, attr *C.char, authprv_json *C.char) *C.char {
-  return C.CString(abe.NewRandomUserkey(C.GoString(user), C.GoString(attr), C.GoString(authprv_json)))
+func newRandomUserkey(user *C.char, attr *C.char, authprvJson *C.char) *C.char {
+  return C.CString(abe.NewRandomUserkeyJson(C.GoString(user), C.GoString(attr), C.GoString(authprvJson)))
 }
 
-//export newRandomMsg
-func newRandomMsg(org_json *C.char) *C.char {
-  return C.CString(abe.NewRandomMsg(C.GoString(org_json)))
+//export newRandomSecret
+func newRandomSecret(orgJson *C.char, seed *C.char) *C.char {
+  return C.CString(abe.NewRandomSecretJson(C.GoString(orgJson), C.GoString(seed)))
+}
+
+//export rewritePolicy
+func rewritePolicy(policy *C.char) *C.char {
+  return C.CString(abe.RewritePolicy(C.GoString(policy)))
 }
 
 //export checkPolicy
-func checkPolicy(policy *C.char) *C.char {
-  return C.CString(abe.CheckPolicy(C.GoString(policy)))
+func checkPolicy(policy *C.char, userattrsJson *C.char) *C.char {
+  return C.CString(abe.CheckPolicyJson(C.GoString(policy), C.GoString(userattrsJson)))
 }
 
-//export extractAuthsFromPolicy
-func extractAuthsFromPolicy(policy *C.char) *C.char {
-  return C.CString(abe.ExtractAuthsFromPolicy(C.GoString(policy)))
+//export authpubsOfPolicy
+func authpubsOfPolicy(policy *C.char) *C.char {
+  return C.CString(abe.AuthPubsOfPolicyJson(C.GoString(policy)))
 }
 
-//export extractPolicyFromCiphertext
-func extractPolicyFromCiphertext(policy *C.char) *C.char {
-  return C.CString(abe.ExtractPolicyFromCiphertext(C.GoString(policy)))
+//export policyOfCiphertextJson
+func policyOfCiphertextJson(ctJson *C.char) *C.char {
+  return C.CString(abe.PolicyOfCiphertextJson(C.GoString(ctJson)))
 }
 
 //export selectUserAttrs
-func selectUserAttrs(user *C.char, policy *C.char, userattrs_json *C.char) *C.char {
-  return C.CString(abe.SelectUserAttrs(C.GoString(user), C.GoString(policy), C.GoString(userattrs_json)))
+func selectUserAttrs(user *C.char, policy *C.char, userattrsJson *C.char) *C.char {
+  return C.CString(abe.SelectUserAttrsJson(C.GoString(user), C.GoString(policy), C.GoString(userattrsJson)))
 }
 
 //export encrypt
-func encrypt(msg *C.char, policy *C.char, policyattrs_json *C.char) *C.char {
-  return C.CString(abe.Encrypt(C.GoString(msg), C.GoString(policy), C.GoString(policyattrs_json)))
+func encrypt(secret *C.char, policy *C.char, authpubsJson *C.char) *C.char {
+  return C.CString(abe.EncryptJson(C.GoString(secret), C.GoString(policy), C.GoString(authpubsJson)))
 }
 
 //export decrypt
-func decrypt(ct_json *C.char, userattrs_json *C.char, userkeys_json *C.char) *C.char {
-  return C.CString(abe.Decrypt(C.GoString(ct_json), C.GoString(userattrs_json), C.GoString(userkeys_json)))
+func decrypt(ctJson *C.char, userattrsJson *C.char) *C.char {
+  return C.CString(abe.DecryptJson(C.GoString(ctJson), C.GoString(userattrsJson)))
 }
 
 func main() {}

@@ -1,0 +1,15 @@
+config:
+  arithmetic:
+    curve: BN254
+    library: miracl
+  storage:
+    redis:
+      local0:
+        addr: 127.0.0.1:6379
+        password:
+    leveldb:
+      local0:
+        name: mosaic.db
+  active:
+    type: leveldb
+    label: local0

@@ -421,3 +421,12 @@ func (userattrs *UserAttrs) OfJsonObj() *UserAttrs {
   }
   return userattrs
 }
+
+// merge 2 UserAttrs
+func (userattrs0 *UserAttrs) Add(userattrs1 *UserAttrs) *UserAttrs {
+  for attr, userkey := range userattrs1.Userkey {
+		userattrs0.Coeff[attr] = userattrs1.Coeff[attr]
+    userattrs0.Userkey[attr] = userkey
+  }
+  return userattrs0
+}

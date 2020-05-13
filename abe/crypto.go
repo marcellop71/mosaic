@@ -53,10 +53,12 @@ func NewRandomAuthJson(orgJson string) string {
 func NewRandomUserkey(user string, attr string, authprv *AuthPrv) (userattrs *UserAttrs) {
 	org := authprv.Org
 
-	nbit := 32
 	userattrs = new(UserAttrs)
 	userattrs.User = user
 	userattrs.Userkey = make(map[string]*Userkey)
+	userattrs.Coeff = make(map[string][]int)
+
+	nbit := 32
 	attrs := getBagOfBitsAttrs(attr, nbit)
 	for _, attr := range attrs {
 		huser := org.Crv.HashToGroup(user, "G2")
@@ -69,6 +71,7 @@ func NewRandomUserkey(user string, attr string, authprv *AuthPrv) (userattrs *Us
 			KP: org.Crv.Pow(org.G1, t),
 		}
 		userattrs.Userkey[attr] = userkey
+		userattrs.Coeff[attr] = []int{}
 	}
 	return
 }
@@ -97,17 +100,21 @@ func NewRandomSecretJson(orgJson string, seed string) string {
   return Encode(JsonObjToStr(p.ToJsonObj()))
 }
 
-// encrypt a secret according to a given policy
-// the function requires the public keys of the authorities mentioned in the policy
-func Encrypt(secret Point, policy string, authpubs *AuthPubs) (ct *Ciphertext) {
+func GetOrgFromAuthPubs(authpubs *AuthPubs) *Org {
 	// all authorities in the policy from the same organization
 	authpub := new(AuthPub)
 	for _, authpubtmp := range authpubs.AuthPub {
 		authpub = authpubtmp
 		break
 	}
-	org := authpub.Org
-	curve := authpub.Org.Crv
+	return authpub.Org
+}
+
+// encrypt a secret according to a given policy
+// the function requires the public keys of the authorities mentioned in the policy
+func Encrypt(secret Point, policy string, authpubs *AuthPubs) (ct *Ciphertext) {
+	org := GetOrgFromAuthPubs(authpubs)
+	curve := org.Crv
 
 	ap := buildAccessPolicy(policy)
 	s := curve.NewRandomSecret(len(ap.Vars), false)
@@ -122,15 +129,15 @@ func Encrypt(secret Point, policy string, authpubs *AuthPubs) (ct *Ciphertext) {
 		}
 	}
 
-	secret.OfJsonObj(curve)
 	S0 := curve.Pow(org.E, s[0])
 	C0 := curve.Mul(secret, S0)
 
 	C := make(map[string][][]Point)
 	for attr, rows := range ap.Row {
-		hattr := curve.HashToGroup(attr, "G2")
 		auth := strings.SplitN(attr, "@", 2)[1]
 		authpub := authpubs.AuthPub[auth]
+		hattr := curve.HashToGroup(attr, "G2")
+
 		C[attr] = make([][]Point, len(rows))
 		for k, i := range rows {
 			tx := curve.NewRandomExp()
@@ -152,6 +159,8 @@ func Encrypt(secret Point, policy string, authpubs *AuthPubs) (ct *Ciphertext) {
 func EncryptJson(secretJson string, policy string, authpubsJson string) string {
 	secret := NewPointOfJsonStr(secretJson)
   authpubs := NewAuthPubsOfJsonStr(authpubsJson).OfJsonObj()
+	org := GetOrgFromAuthPubs(authpubs)
+	secret.OfJsonObj(org.Crv)
   ct := Encrypt(secret, policy, authpubs)
 	return Encode(JsonObjToStr(ct.ToJsonObj()))
 }

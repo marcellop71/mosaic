@@ -333,5 +333,11 @@ service.SetupUserkey(user, "A=5@auth0")
 
 ## Curves and pairings
 
-- use "BN254" or "BLS12381" or "BN462" if using [__miracl__](https://github.com/miracl/core) (recommended)
-- use "SS512" or "BN254" if using [__pbc__](https://crypto.stanford.edu/pbc/)
+Use "BN254" or "BLS12381" or "BN462" if using [__miracl__](https://github.com/miracl/core) (recommended)
+or use "SS512" or "BN254" if using [__pbc__](https://crypto.stanford.edu/pbc/).
+
+Let the pairing be G1 x G2 -> GT
+
+The scheme encrypts a point in GT as:
+- a point on GT (the point to be encrypted perturbed by a secret)
+- a bags of 4-points tuples (point on GT, point on G1, point on G1, point on G2) [one tuple for each attribute-leave in the policy]

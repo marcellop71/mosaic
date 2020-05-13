@@ -1,6 +1,7 @@
 package abe
 
 import (
+	"crypto/sha256"
 	"math/big"
 	"strings"
 
@@ -98,6 +99,11 @@ func NewRandomSecretJson(orgJson string, seed string) string {
 	org := NewOrgOfJsonStr(orgJson).OfJsonObj()
 	p := NewRandomSecret(org, seed)
   return Encode(JsonObjToStr(p.ToJsonObj()))
+}
+
+func SecretHash(secret Point) string {
+	secret_hash := sha256.Sum256([]byte(secret.ToJsonObj().GetP()))
+	return Encode(string(secret_hash[:]))
 }
 
 func GetOrgFromAuthPubs(authpubs *AuthPubs) *Org {

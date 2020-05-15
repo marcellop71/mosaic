@@ -149,16 +149,12 @@ func (curve *MiraclCurve) UnitOnGroup(group string) Point {
 // hash to group ("G1", "G2", "GT") in the bilinear pairing
 func (curve *MiraclCurve) HashToGroup(x string, group string) Point {
   hx := sha256.Sum256([]byte(x))
-  hx_ := new(big.Int).SetBytes(hx[:])
-  hx__ := crv.BigToBIG(hx_)
   p := curve.NewPointOn(group).(*MiraclPoint)
   switch group {
   case "G1":
-    q1 := crv.ECP_generator()
-    p.p1 = crv.G1mul(q1, hx__)
+    p.p1 = crv.Hash_to_point_G1(hx[:])
   case "G2":
-    q2 := crv.ECP2_generator()
-    p.p2 = crv.G2mul(q2, hx__)
+    p.p2 = crv.Hash_to_point_G2(hx[:])
   case "GT":
   }
   return p

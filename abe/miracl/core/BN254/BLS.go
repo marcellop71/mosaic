@@ -172,3 +172,31 @@ func Core_Verify(SIG []byte, M []byte, W []byte) int {
 		return BLS_FAIL
 	}
 }
+
+// ------------------------------------------
+// added by Marcello Paris
+// for github.com/unicredit/mosaic
+//
+// BEGIN
+// ------------------------------------------
+
+func Hash_to_point_G1(M []byte) *ECP {
+  return bls_hash_to_point(M)
+}
+
+/* hash a message to an ECP point, using SHA2, random oracle method */
+func Hash_to_point_G2(M []byte) *ECP2 {
+	DST := []byte("BLS_SIG_ZZZG1_XMD:SHA256-SSWU-RO-_NUL_")
+	u := hash_to_field(core.MC_SHA2,HASH_TYPE,DST,M,4)
+
+	P:=ECP2_map2point(NewFP2fps(u[0], u[1]))
+	P1 := ECP2_map2point(NewFP2fps(u[2], u[3]))
+	P.Add(P1)
+	P.Cfp()
+	P.Affine()
+	return P
+}
+
+// ------------------------------------------
+// END
+// ------------------------------------------

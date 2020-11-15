@@ -9,6 +9,8 @@ func main() {
 	log.Init("Info")
 
 	curve := abe.NewCurve()
+	seed := "abcde"
+	curve.InitRng(seed)
 	org := abe.NewRandomOrg(curve)
 	authkeys := abe.NewRandomAuth(org)
 	user := "marcello.paris@gmail.com"
@@ -30,8 +32,7 @@ func main() {
 		log.Info("policy: %s", policy)
 
 		// ecnrypting
-		seed := ""
-		secret := abe.NewRandomSecret(org, seed)
+		secret := abe.NewRandomSecret(org)
 		policy = abe.RewritePolicy(policy)
 		authpubs := abe.AuthPubsOfPolicy(policy)
 		for attr, _ := range authpubs.AuthPub {

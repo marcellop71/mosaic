@@ -227,24 +227,24 @@ The file structure of the core lib is the following:
 
 ## Examples
 
-An __./examples/example.go__ is there to show how the APIs could be used.
+An __./examples/ex_GoAPI_noservice_noz3.go__ is there to show how the APIs could be used.
 The aim is to encrypt a secret according to a given policy (iterating
 over a small set of policies) and recover it (if feasible),
 according to a selection of attributes given to a user.
 
 ```bash
-go run -tags=z3,miracl examples/example.go
+go run -tags=z3,miracl examples/ex_GoAPI_noservice_noz3.go
 ```
 
 or
 
 ```bash
-docker run -it mosaic:latest go run -tags=z3,miracl examples/example.go
+docker run -it mosaic:latest go run -tags=z3,miracl examples/ex_GoAPI_noservice_noz3.go
 ```
 
 ### Storage
 
-__./examples/example.go__ is an application using the __github.com/mosaic/abe__ package
+__./examples/ex_GoAPI_noservice_noz3.go__ is an application using the __github.com/mosaic/abe__ package
 and a __./mosaic/service__ package to handle some storage for the keys,
 the attributes and the users.
 The service package implemented can use [__Leveldb__](https://github.com/google/leveldb)
@@ -301,7 +301,6 @@ service.SetupAuth("auth0", "org0")  // setting up an authority into a given orga
 policy := "A@auth0 /\\ (B@auth0 /\\ (C@auth0 \\/ D@auth0))" // a policy as a standard boolean expression
 
 // encrypting
-seed := ""                                       // secret will be random
 secret := service.NewRandomSecret("org0", seed)  // create a new secret
 policy = abe.RewritePolicy(policy)               // simplify policy
 auths := abe.AuthPubsOfPolicyJson(policy)      // extracts authorities mentioned in the policy

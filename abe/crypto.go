@@ -85,19 +85,16 @@ func NewRandomUserkeyJson(user string, attr string, authprvJson string) string {
 }
 
 // new random secret
-func NewRandomSecret(org *Org, seed string) (secret Point) {
-	if len(seed) == 0 {
-		secret = org.Crv.NewRandomPointOn("GT")
-	} else {
-		secret = org.Crv.HashToGroup(seed, "GT")
-	}
+func NewRandomSecret(org *Org) (secret Point) {
+	secret = org.Crv.NewRandomPointOn("GT")
+	//secret = org.Crv.HashToGroup(org.Crv.seed, "GT")
 	return secret
 }
 
 // Json API for NewRandomSecret
-func NewRandomSecretJson(orgJson string, seed string) string {
+func NewRandomSecretJson(orgJson string) string {
 	org := NewOrgOfJsonStr(orgJson).OfJsonObj()
-	p := NewRandomSecret(org, seed)
+	p := NewRandomSecret(org)
 	return Encode(JsonObjToStr(p.ToJsonObj()))
 }
 

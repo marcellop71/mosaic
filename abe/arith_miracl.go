@@ -11,7 +11,7 @@ import (
 	crv "github.com/marcellop71/mosaic/abe/miracl/core/BN254"
 	//crv "github.com/marcellop71/mosaic/abe/miracl/core/BLS12381"
 	//crv "github.com/marcellop71/mosaic/abe/miracl/core/BN462"
-	//"github.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 func NewPoint() Point {
@@ -70,7 +70,9 @@ func (p *MiraclPoint) OfJsonObj(curve Curve) Point {
 
 // curve on miracl library
 type MiraclCurve struct {
-	Name string
+	Name string `json:"name"`
+	seed string `json:"seed"`
+	rng *core.RAND
 }
 
 func (curve *MiraclCurve) isCurve() {}
@@ -80,6 +82,14 @@ func (curve *MiraclCurve) ToJsonObj() Curve {
 }
 
 func (curve *MiraclCurve) OfJsonObj() Curve {
+	return curve
+}
+
+func (curve *MiraclCurve) InitRng(seed string) Curve {
+	curve.seed = seed
+	curve.rng = core.NewRAND()
+	hseed := sha256.Sum256([]byte(curve.seed))
+	curve.rng.Seed(32, hseed[:])
 	return curve
 }
 
@@ -105,9 +115,8 @@ func (curve *MiraclCurve) NewRandomExp() *big.Int {
 	rng := rand.Reader
 	x, _ := rand.Int(rng, order)
 
-	//rng := core.NewRAND()
 	//m := crv.NewBIGints(crv.Modulus)
-	//xtmp := crv.Randomnum(m, rng)
+	//xtmp := crv.Randomnum(m, curve.rng)
 	//x := crv.BIGtoBig(xtmp)
 	return x
 }
@@ -115,19 +124,23 @@ func (curve *MiraclCurve) NewRandomExp() *big.Int {
 // new random point on a group ("G1", "G2", "GT") in the bilinear pairing
 func (curve *MiraclCurve) NewRandomPointOn(group string) Point {
 	p := new(MiraclPoint)
-	x := curve.NewRandomExp()
-	x_ := crv.BigToBIG(x)
 
 	switch group {
 	case "G1":
+		x := curve.NewRandomExp()
+		x_ := crv.BigToBIG(x)
 		q1 := crv.ECP_generator()
 		p.p1 = crv.G1mul(q1, x_)
 	case "G2":
+		x := curve.NewRandomExp()
+		x_ := crv.BigToBIG(x)
 		q2 := crv.ECP2_generator()
 		p.p2 = crv.G2mul(q2, x_)
 	case "GT":
-		rng := core.NewRAND()
-		p.pt = crv.NewFP12rand(rng)
+		p.pt = crv.NewFP12rand(curve.rng)
+		buf := make([]byte, 12*crv.MODBYTES)
+		p.pt.ToBytes(buf)
+		log.Info("%s", Encode(string(buf)))
 	}
 	p.Group = group
 	return p

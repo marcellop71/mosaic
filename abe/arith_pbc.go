@@ -56,6 +56,7 @@ type PbcCurve struct {
 	maxrndexp *big.Int
 	Params    string `json:"params"`
 	Maxrndexp string `json:"maxrndexp"`
+	Seed 			string `json:"seed"`
 }
 
 func (curve *PbcCurve) isCurve() {}
@@ -75,6 +76,10 @@ func (curve *PbcCurve) OfJsonObj() Curve {
 	return curve
 }
 
+func (curve *PbcCurve) InitRng(seed string) Curve {
+	return curve
+}
+
 // new point instance on a curve
 func (curve *PbcCurve) NewPointOn(group string) Point {
 	return &PbcPoint{
@@ -90,7 +95,7 @@ func (curve *PbcCurve) NewRandomExp() *big.Int {
 }
 
 // new random point on a group ("G1", "G2", "GT") in the bilinear pairing
-func (curve *PbcCurve) NewRandomPointOn(group string) Point {
+func (curve *PbcCurve) NewRandomPointOn(seed string, group string) Point {
 	tmp := curve.NewPointOn(group).(*PbcPoint)
 	return &PbcPoint{
 		p:     tmp.p.Rand(),

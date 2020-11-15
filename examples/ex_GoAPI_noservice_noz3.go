@@ -9,7 +9,7 @@ func main() {
 	log.Init("Info")
 
 	curve := abe.NewCurve()
-	seed := "abcde"
+	seed := "abcdef"
 	curve.InitRng(seed)
 	org := abe.NewRandomOrg(curve)
 	authkeys := abe.NewRandomAuth(org)

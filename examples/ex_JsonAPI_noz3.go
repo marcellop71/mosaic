@@ -75,7 +75,7 @@ func main() {
 		secret_dec := abe.DecryptJson(secret_enc, userattrsJson)
 		secret_dec_hash := sha256.Sum256([]byte(secret_dec))
 
-		if (abe.Encode(string(secret_dec_hash[:])) == abe.Encode(string(secret_hash[:]))) {
+		if abe.Encode(string(secret_dec_hash[:])) == abe.Encode(string(secret_hash[:])) {
 			log.Info("secret correctly reconstructed")
 		} else {
 			log.Info("secret not correctly reconstructed")

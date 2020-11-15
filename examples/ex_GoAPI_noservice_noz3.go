@@ -47,7 +47,7 @@ func main() {
 
 		secret_dec := abe.Decrypt(ct, userattrs)
 
-		if (abe.SecretHash(secret) == abe.SecretHash(secret_dec)) {
+		if abe.SecretHash(secret) == abe.SecretHash(secret_dec) {
 			log.Info("secret correctly reconstructed")
 		} else {
 			log.Info("secret not correctly reconstructed")

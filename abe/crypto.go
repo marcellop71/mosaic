@@ -12,8 +12,8 @@ import (
 func NewRandomOrg(curve Curve) (org *Org) {
 	org = &Org{
 		Crv: curve,
-		G1: curve.NewRandomPointOn("G1"),
-		G2: curve.NewRandomPointOn("G2"),
+		G1:  curve.NewRandomPointOn("G1"),
+		G2:  curve.NewRandomPointOn("G2"),
 	}
 	org.E = curve.Pair(org.G1, org.G2)
 	return
@@ -22,21 +22,21 @@ func NewRandomOrg(curve Curve) (org *Org) {
 // Json API for NewRandomOrg
 func NewRandomOrgJson(curveJson string) string {
 	curve := NewCurveOfJsonStr(curveJson).OfJsonObj()
-  org := NewRandomOrg(curve)
+	org := NewRandomOrg(curve)
 	return Encode(JsonObjToStr(org.ToJsonObj()))
 }
 
 // new random authority
 func NewRandomAuth(org *Org) (authkeys *AuthKeys) {
 	authprv := &AuthPrv{
-		Org: org,
+		Org:   org,
 		Alpha: org.Crv.NewRandomExp(),
-		Y: org.Crv.NewRandomExp()}
+		Y:     org.Crv.NewRandomExp()}
 
 	authpub := &AuthPub{
-		Org: org,
+		Org:    org,
 		Ealpha: org.Crv.Pow(org.E, authprv.Alpha),
-		G1y: org.Crv.Pow(org.G1, authprv.Y)}
+		G1y:    org.Crv.Pow(org.G1, authprv.Y)}
 
 	authkeys = &AuthKeys{
 		AuthPub: authpub, AuthPrv: authprv}
@@ -46,7 +46,7 @@ func NewRandomAuth(org *Org) (authkeys *AuthKeys) {
 // Json API for NewRandomAuth
 func NewRandomAuthJson(orgJson string) string {
 	org := NewOrgOfJsonStr(orgJson).OfJsonObj()
-  authkeys := NewRandomAuth(org)
+	authkeys := NewRandomAuth(org)
 	return Encode(JsonObjToStr(authkeys.ToJsonObj()))
 }
 
@@ -68,8 +68,8 @@ func NewRandomUserkey(user string, attr string, authprv *AuthPrv) (userattrs *Us
 
 		userkey := &Userkey{
 			Org: org,
-			K: org.Crv.Pow3(org.G2, authprv.Alpha, huser, authprv.Y, hattr, t),
-			KP: org.Crv.Pow(org.G1, t),
+			K:   org.Crv.Pow3(org.G2, authprv.Alpha, huser, authprv.Y, hattr, t),
+			KP:  org.Crv.Pow(org.G1, t),
 		}
 		userattrs.Userkey[attr] = userkey
 		userattrs.Coeff[attr] = []int{}
@@ -80,13 +80,13 @@ func NewRandomUserkey(user string, attr string, authprv *AuthPrv) (userattrs *Us
 // Json API for NewRandomUserkey
 func NewRandomUserkeyJson(user string, attr string, authprvJson string) string {
 	authprv := NewAuthPrvOfJsonStr(authprvJson).OfJsonObj()
-  userattrs := NewRandomUserkey(user, attr, authprv)
+	userattrs := NewRandomUserkey(user, attr, authprv)
 	return Encode(JsonObjToStr(userattrs.ToJsonObj()))
 }
 
 // new random secret
 func NewRandomSecret(org *Org, seed string) (secret Point) {
-	if (len(seed) == 0) {
+	if len(seed) == 0 {
 		secret = org.Crv.NewRandomPointOn("GT")
 	} else {
 		secret = org.Crv.HashToGroup(seed, "GT")
@@ -98,7 +98,7 @@ func NewRandomSecret(org *Org, seed string) (secret Point) {
 func NewRandomSecretJson(orgJson string, seed string) string {
 	org := NewOrgOfJsonStr(orgJson).OfJsonObj()
 	p := NewRandomSecret(org, seed)
-  return Encode(JsonObjToStr(p.ToJsonObj()))
+	return Encode(JsonObjToStr(p.ToJsonObj()))
 }
 
 func SecretHash(secret Point) string {
@@ -157,17 +157,17 @@ func Encrypt(secret Point, policy string, authpubs *AuthPubs) (ct *Ciphertext) {
 	}
 
 	ct = &Ciphertext{
-		Org: org, Policy: policy, C0: C0, C: C,}
+		Org: org, Policy: policy, C0: C0, C: C}
 	return
 }
 
 // Json API for Encrypt
 func EncryptJson(secretJson string, policy string, authpubsJson string) string {
 	secret := NewPointOfJsonStr(secretJson)
-  authpubs := NewAuthPubsOfJsonStr(authpubsJson).OfJsonObj()
+	authpubs := NewAuthPubsOfJsonStr(authpubsJson).OfJsonObj()
 	org := GetOrgFromAuthPubs(authpubs)
 	secret.OfJsonObj(org.Crv)
-  ct := Encrypt(secret, policy, authpubs)
+	ct := Encrypt(secret, policy, authpubs)
 	return Encode(JsonObjToStr(ct.ToJsonObj()))
 }
 
@@ -182,7 +182,7 @@ func Decrypt(ct *Ciphertext, userattrs *UserAttrs) (secret Point) {
 	S0 := curve.UnitOnGroup("GT")
 	for attr, cs := range userattrs.Coeff {
 		for k, c := range cs {
-			if (c != 0) {
+			if c != 0 {
 				userkey := userattrs.Userkey[attr]
 				tmp := curve.ProdPair(
 					[]Point{ct.C[attr][k][1], ct.C[attr][k][2], userkey.KP},
@@ -200,9 +200,9 @@ func Decrypt(ct *Ciphertext, userattrs *UserAttrs) (secret Point) {
 
 // Json API for Decrypt
 func DecryptJson(ctJson string, userattrsJson string) string {
-  ct := NewCiphertextOfJsonStr(ctJson).OfJsonObj()
+	ct := NewCiphertextOfJsonStr(ctJson).OfJsonObj()
 	userattrs := NewUserAttrsOfJsonStr(userattrsJson).OfJsonObj()
-  secret := Decrypt(ct, userattrs)
+	secret := Decrypt(ct, userattrs)
 	return secret.ToJsonObj().GetP()
 }
 

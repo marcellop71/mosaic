@@ -21,8 +21,8 @@ func NewCurve() Curve {
 
 // point on pbc library
 type PbcPoint struct {
-	p *pbc.Element
-	P string `json:"p"`
+	p     *pbc.Element
+	P     string `json:"p"`
 	Group string `json:"group"`
 }
 
@@ -51,10 +51,10 @@ func (p *PbcPoint) OfJsonObj(curve Curve) Point {
 
 // curve on pbc library
 type PbcCurve struct {
-	pairing *pbc.Pairing
-	params *pbc.Params
+	pairing   *pbc.Pairing
+	params    *pbc.Params
 	maxrndexp *big.Int
-	Params string `json:"params"`
+	Params    string `json:"params"`
 	Maxrndexp string `json:"maxrndexp"`
 }
 
@@ -70,8 +70,8 @@ func (curve *PbcCurve) ToJsonObj() Curve {
 // PbcCurve type from its json representation
 func (curve *PbcCurve) OfJsonObj() Curve {
 	curve.params = pbc.NewParamsFromString(Decode(curve.Params))
-  curve.pairing = pbc.NewPairing(Decode(curve.params))
-  curve.maxrndexp = new(big.Int).SetBytes(Decode(curve.Maxrndexp))
+	curve.pairing = pbc.NewPairing(Decode(curve.params))
+	curve.maxrndexp = new(big.Int).SetBytes(Decode(curve.Maxrndexp))
 	return curve
 }
 
@@ -93,7 +93,7 @@ func (curve *PbcCurve) NewRandomExp() *big.Int {
 func (curve *PbcCurve) NewRandomPointOn(group string) Point {
 	tmp := curve.NewPointOn(group).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Rand(),
+		p:     tmp.p.Rand(),
 		Group: group,
 	}
 }
@@ -102,7 +102,7 @@ func (curve *PbcCurve) NewRandomPointOn(group string) Point {
 func (curve *PbcCurve) UnitOnGroup(group string) Point {
 	tmp := curve.NewPointOn(group).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Set1(),
+		p:     tmp.p.Set1(),
 		Group: group,
 	}
 }
@@ -112,7 +112,7 @@ func (curve *PbcCurve) HashToGroup(x string, group string) Point {
 	hx := sha256.Sum256([]byte(x))
 	tmp := curve.NewPointOn(group).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.SetFromHash(hx[:]),
+		p:     tmp.p.SetFromHash(hx[:]),
 		Group: group,
 	}
 }
@@ -127,7 +127,7 @@ func (curve *PbcCurve) HashToPow(x string, g Point) Point {
 func (curve *PbcCurve) Inv(g1 Point) Point {
 	tmp := curve.NewPointOn(g1.GetGroup()).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Invert(g1.(*PbcPoint).p),
+		p:     tmp.p.Invert(g1.(*PbcPoint).p),
 		Group: g1.GetGroup(),
 	}
 }
@@ -136,7 +136,7 @@ func (curve *PbcCurve) Inv(g1 Point) Point {
 func (curve *PbcCurve) Mul(g1 Point, g2 Point) Point {
 	tmp := curve.NewPointOn(g1.GetGroup()).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Mul(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
+		p:     tmp.p.Mul(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
 		Group: g1.GetGroup(),
 	}
 }
@@ -145,7 +145,7 @@ func (curve *PbcCurve) Mul(g1 Point, g2 Point) Point {
 func (curve *PbcCurve) Div(g1 Point, g2 Point) Point {
 	tmp := curve.NewPointOn(g1.GetGroup()).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Div(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
+		p:     tmp.p.Div(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
 		Group: g1.GetGroup(),
 	}
 }
@@ -153,12 +153,12 @@ func (curve *PbcCurve) Div(g1 Point, g2 Point) Point {
 // group operation
 func (curve *PbcCurve) Pow(g1 Point, e1 *big.Int) Point {
 	tmp := curve.NewPointOn(g1.GetGroup()).(*PbcPoint)
-  tmp.p = tmp.p.PowBig(g1.(*PbcPoint).p, new(big.Int).Abs(e1))
-  if (e1.Sign() < 0) {
-    tmp.p.ThenInvert()
-  }
+	tmp.p = tmp.p.PowBig(g1.(*PbcPoint).p, new(big.Int).Abs(e1))
+	if e1.Sign() < 0 {
+		tmp.p.ThenInvert()
+	}
 	return &PbcPoint{
-		p: tmp.p,
+		p:     tmp.p,
 		Group: g1.GetGroup(),
 	}
 }
@@ -168,28 +168,28 @@ func (curve *PbcCurve) Pair(g1 Point, g2 Point) Point {
 	group := "GT"
 	tmp := curve.NewPointOn(group).(*PbcPoint)
 	return &PbcPoint{
-		p: tmp.p.Pair(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
+		p:     tmp.p.Pair(g1.(*PbcPoint).p, g2.(*PbcPoint).p),
 		Group: group,
 	}
 }
 
 // group operation
 func (curve *PbcCurve) Pow2(g1 Point, e1 *big.Int, g2 Point, e2 *big.Int) Point {
-  return curve.Mul(curve.Pow(g1, e1), curve.Pow(g2, e2))
+	return curve.Mul(curve.Pow(g1, e1), curve.Pow(g2, e2))
 }
 
 // group operation
 func (curve *PbcCurve) Pow3(g1 Point, e1 *big.Int, g2 Point, e2 *big.Int, g3 Point, e3 *big.Int) Point {
-  return curve.Mul(curve.Pow(g1, e1), curve.Mul(curve.Pow(g2, e2), curve.Pow(g3, e3)))
+	return curve.Mul(curve.Pow(g1, e1), curve.Mul(curve.Pow(g2, e2), curve.Pow(g3, e3)))
 }
 
 // pairing
 func (curve *PbcCurve) ProdPair(g1 []Point, g2 []Point) Point {
-  tmp := curve.UnitOnGroup("GT")
-  for i := 0; i < len(g1); i++ {
-    tmp = curve.Mul(tmp, curve.Pair(g1[i], g2[i]))
-  }
-  return tmp
+	tmp := curve.UnitOnGroup("GT")
+	for i := 0; i < len(g1); i++ {
+		tmp = curve.Mul(tmp, curve.Pair(g1[i], g2[i]))
+	}
+	return tmp
 }
 
 // new random secret vector of length n
@@ -199,7 +199,7 @@ func (curve *PbcCurve) NewRandomSecret(n int, zerosecret bool) []*big.Int {
 	for i := 0; i < n; i++ {
 		s[i] = curve.NewRandomExp()
 	}
-	if (zerosecret) {
+	if zerosecret {
 		s[0] = new(big.Int).SetInt64(0)
 	}
 	return s

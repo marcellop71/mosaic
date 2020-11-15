@@ -94,9 +94,9 @@ size_t wordsize() {
 import "C"
 
 import (
-  "math/big"
-  "runtime"
-  "unsafe"
+	"math/big"
+	"runtime"
+	"unsafe"
 )
 
 type mpz struct {
@@ -108,7 +108,7 @@ func freeMpz(x *mpz) {
 }
 
 func newMpz() *mpz {
-	out := &mpz{p:C.newMpzT()}
+	out := &mpz{p: C.newMpzT()}
 	runtime.SetFinalizer(out, freeMpz)
 	return out
 }
@@ -127,7 +127,7 @@ type Params struct {
 }
 
 func freeParams(params *Params) {
-  C.freeParamStruct(params.cptr)
+	C.freeParamStruct(params.cptr)
 }
 
 func makeParams() *Params {
@@ -169,7 +169,7 @@ func (params *Params) String() string {
 
 type Pairing struct {
 	params *Params
-	cptr *C.struct_pairing_s
+	cptr   *C.struct_pairing_s
 }
 
 func freePairing(pairing *Pairing) {
@@ -195,9 +195,9 @@ func (pairing *Pairing) NewUncheckedElement(group string) *Element {
 }
 
 type Element struct {
-	pairing *Pairing
-	cptr *C.struct_element_s
-	fieldPtr *C.struct_field_s
+	pairing   *Pairing
+	cptr      *C.struct_element_s
+	fieldPtr  *C.struct_field_s
 	isInteger bool
 }
 
@@ -270,7 +270,7 @@ func (e *Element) Invert(x *Element) *Element {
 }
 
 func (e *Element) ThenInvert() *Element {
-  return e.Invert(e)
+	return e.Invert(e)
 }
 
 func (e *Element) PowBig(x *Element, i *big.Int) *Element {

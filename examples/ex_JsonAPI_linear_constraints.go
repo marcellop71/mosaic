@@ -49,7 +49,7 @@ func main() {
 	for _, policy := range policies {
 		log.Info("----------------")
 		log.Info("policy: %s", policy)
-		if (abe.CheckPolicy(policy, nil) == "sat") {
+		if abe.CheckPolicy(policy, nil) == "sat" {
 			// ecnrypting
 			seed := ""
 			secretJson := service.NewRandomSecret(org, seed)
@@ -65,13 +65,13 @@ func main() {
 			// decrypting
 			policy = abe.PolicyOfCiphertextJson(secret_enc)
 			userattrsJson := service.FetchUserAttrs(user)
-			if (abe.CheckPolicyJson(policy, userattrsJson) == "sat") {
+			if abe.CheckPolicyJson(policy, userattrsJson) == "sat" {
 				userattrsJson = abe.SelectUserAttrsJson(user, policy, userattrsJson)
 				userattrsJson = service.FetchUserkeys(userattrsJson)
 				secret_dec := abe.DecryptJson(secret_enc, userattrsJson)
 				secret_dec_hash := sha256.Sum256([]byte(secret_dec))
 
-				if (abe.Encode(string(secret_dec_hash[:])) == abe.Encode(string(secret_hash[:]))) {
+				if abe.Encode(string(secret_dec_hash[:])) == abe.Encode(string(secret_hash[:])) {
 					log.Info("secret correctly reconstructed")
 				} else {
 					log.Info("secret not correctly reconstructed")

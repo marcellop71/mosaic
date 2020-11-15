@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitthub.com/marcellop71/mosaic/abe"
-	"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 func main() {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"gitthub.com/marcellop71/mosaic/abe"
-	//"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe"
+	//"github.com/marcellop71/mosaic/abe/log"
 )
 
 type Storage interface {

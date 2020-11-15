@@ -35,7 +35,7 @@
 
 package BLS12381
 //import "github.com/miracl/core/go/core"
-import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
+import "github.com/marcellop71/mosaic/abe/miracl/core"
 
 type FP struct {
 	x   *BIG

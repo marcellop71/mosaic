@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"math/big"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 // point interface

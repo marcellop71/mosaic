@@ -7,11 +7,11 @@ import (
 	"crypto/sha256"
 	"math/big"
 
-	core "gitthub.com/marcellop71/mosaic/abe/miracl/core"
-	crv "gitthub.com/marcellop71/mosaic/abe/miracl/core/BN254"
-	//crv "gitthub.com/marcellop71/mosaic/abe/miracl/core/BLS12381"
-	//crv "gitthub.com/marcellop71/mosaic/abe/miracl/core/BN462"
-	//"gitthub.com/marcellop71/mosaic/abe/log"
+	core "github.com/marcellop71/mosaic/abe/miracl/core"
+	crv "github.com/marcellop71/mosaic/abe/miracl/core/BN254"
+	//crv "github.com/marcellop71/mosaic/abe/miracl/core/BLS12381"
+	//crv "github.com/marcellop71/mosaic/abe/miracl/core/BN462"
+	//"github.com/marcellop71/mosaic/abe/log"
 )
 
 func NewPoint() Point {

@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"strings"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 // new random organization

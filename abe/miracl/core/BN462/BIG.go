@@ -37,14 +37,14 @@ package BN462
 import "strconv"
 import "math/bits"
 //import "github.com/miracl/core/go/core"
-import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
+import "github.com/marcellop71/mosaic/abe/miracl/core"
 
 //import "fmt"
 //import "os"
 
 // ------------------------------------------
 // added by Marcello Paris
-// for gitthub.com/marcellop71/mosaic
+// for github.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------
@@ -994,7 +994,7 @@ func ssn(r *BIG, a *BIG, m *BIG) int {
 
 // ------------------------------------------
 // added by Marcello Paris
-// for gitthub.com/marcellop71/mosaic
+// for github.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------

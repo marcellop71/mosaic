@@ -7,8 +7,8 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
-	"gitthub.com/marcellop71/mosaic/abe/parser"
+	"github.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/parser"
 )
 
 // binary tree with string labels and
@@ -351,8 +351,7 @@ func getBagOfBitsAttrs(attr string, nbit int) []string {
 	var attrs []string
 	s0 := strings.Split(attr, "@")
 	s1 := strings.Split(s0[0], "=")
-	attr_tmp := fmt.Sprintf
-("%s@%s", s1[0], s0[1])
+	attr_tmp := fmt.Sprintf("%s@%s", s1[0], s0[1])
 	if len(s1) == 1 {
 		attrs = []string{attr_tmp}
 	} else {

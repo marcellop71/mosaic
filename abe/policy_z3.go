@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
-	"gitthub.com/marcellop71/mosaic/abe/z3"
+	"github.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/z3"
 )
 
 // evals on z3 library via smt2

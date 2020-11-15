@@ -5,7 +5,7 @@ import (
 
 	levigo "github.com/jmhodges/levigo"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 type StorageLeveldb struct{}

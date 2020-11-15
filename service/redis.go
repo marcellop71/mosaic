@@ -5,7 +5,7 @@ import (
 
 	redis "github.com/go-redis/redis/v7"
 
-	"gitthub.com/marcellop71/mosaic/abe/log"
+	"github.com/marcellop71/mosaic/abe/log"
 )
 
 type StorageRedis struct{}

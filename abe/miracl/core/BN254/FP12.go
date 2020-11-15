@@ -39,12 +39,12 @@ package BN254
 
 // ------------------------------------------
 // added by Marcello Paris
-// for gitthub.com/marcellop71/mosaic
+// for github.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------
 
-import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
+import "github.com/marcellop71/mosaic/abe/miracl/core"
 
 // ------------------------------------------
 // END
@@ -1160,7 +1160,7 @@ func pow4(q []*FP12, u []*BIG) *FP12 {
 
 // ------------------------------------------
 // added by Marcello Paris
-// for gitthub.com/marcellop71/mosaic
+// for github.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------

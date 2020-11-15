@@ -38,7 +38,7 @@ package BN254
 
 //import "fmt"
 //import "github.com/miracl/core/go/core"
-import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
+import "github.com/marcellop71/mosaic/abe/miracl/core"
 
 func reverse(X []byte) {
 	lx:=len(X)

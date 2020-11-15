@@ -39,7 +39,7 @@
 package BN254
 
 //import "github.com/miracl/core/go/core"
-import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
+import "github.com/marcellop71/mosaic/abe/miracl/core"
 
 //import "fmt"
 
@@ -175,7 +175,7 @@ func Core_Verify(SIG []byte, M []byte, W []byte) int {
 
 // ------------------------------------------
 // added by Marcello Paris
-// for gitthub.com/marcellop71/mosaic
+// for github.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------

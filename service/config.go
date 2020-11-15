@@ -5,7 +5,7 @@ import (
 
   yaml "gopkg.in/yaml.v3"
 
-  "github.com/unicredit/mosaic/abe/log"
+  "gitthub.com/marcellop71/mosaic/abe/log"
 )
 
 type ArithmeticConf struct {

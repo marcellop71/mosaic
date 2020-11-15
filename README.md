@@ -89,7 +89,7 @@ Syntax for attributes and policies:
 To use the library in a Go environment
 
 ```go
-import "github.com/unicredit/mosaic/abe"
+import "gitthub.com/marcellop71/mosaic/abe"
 ```
 
 Core __Go__ APIs are wrapped by JSON APIs so that every function

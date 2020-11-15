@@ -4,7 +4,7 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/unicredit/mosaic/abe/log"
+	"gitthub.com/marcellop71/mosaic/abe/log"
 )
 
 // ap linear access policy encoded into a full matrix by row

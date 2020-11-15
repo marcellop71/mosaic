@@ -3,7 +3,7 @@ package main
 import "C"
 
 import (
-	"github.com/unicredit/mosaic/abe"
+	"gitthub.com/marcellop71/mosaic/abe"
 )
 
 //export newRandomOrg

@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"strconv"
 
-	"github.com/unicredit/mosaic/abe/pbc"
+	"gitthub.com/marcellop71/mosaic/abe/pbc"
 )
 
 func NewPoint() Point {

@@ -35,7 +35,7 @@
 
 package BN254
 //import "github.com/miracl/core/go/core"
-import "github.com/unicredit/mosaic/abe/miracl/core"
+import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
 
 type FP struct {
 	x   *BIG

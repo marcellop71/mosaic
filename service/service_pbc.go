@@ -3,7 +3,7 @@
 package service
 
 import (
-	"github.com/unicredit/mosaic/abe"
+	"gitthub.com/marcellop71/mosaic/abe"
 )
 
 // get curve on pbc library and stores it

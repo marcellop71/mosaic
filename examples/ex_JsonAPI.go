@@ -4,9 +4,9 @@ import (
 	"crypto/sha256"
 	"path/filepath"
 
-	"github.com/unicredit/mosaic/abe"
-	"github.com/unicredit/mosaic/abe/log"
-	"github.com/unicredit/mosaic/service"
+	"gitthub.com/marcellop71/mosaic/abe"
+	"gitthub.com/marcellop71/mosaic/abe/log"
+	"gitthub.com/marcellop71/mosaic/service"
 )
 
 func main() {

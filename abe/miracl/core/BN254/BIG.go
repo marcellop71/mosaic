@@ -37,11 +37,11 @@ package BN254
 import "strconv"
 import "math/bits"
 //import "github.com/miracl/core/go/core"
-import "github.com/unicredit/mosaic/abe/miracl/core"
+import "gitthub.com/marcellop71/mosaic/abe/miracl/core"
 
 // ------------------------------------------
 // added by Marcello Paris
-// for github.com/unicredit/mosaic
+// for gitthub.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------
@@ -994,7 +994,7 @@ func ssn(r *BIG, a *BIG, m *BIG) int {
 
 // ------------------------------------------
 // added by Marcello Paris
-// for github.com/unicredit/mosaic
+// for gitthub.com/marcellop71/mosaic
 //
 // BEGIN
 // ------------------------------------------

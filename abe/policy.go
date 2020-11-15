@@ -7,8 +7,8 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 
-	"github.com/unicredit/mosaic/abe/log"
-	"github.com/unicredit/mosaic/abe/parser"
+	"gitthub.com/marcellop71/mosaic/abe/log"
+	"gitthub.com/marcellop71/mosaic/abe/parser"
 )
 
 // binary tree with string labels and

@@ -254,7 +254,7 @@ Details in the configuration file __./examples/config.yaml__
 ```yaml
 config:
   arithmetic:
-		library: miracl
+    library: miracl
     curve: BN254
     seed: abcdef
   storage:

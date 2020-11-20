@@ -73,6 +73,7 @@ type MiraclCurve struct {
 	rng *core.RAND
 	Name string `json:"name"`
 	Seed string `json:"seed"`
+	RunsCount int `json:"runcount"`
 }
 
 func (curve *MiraclCurve) isCurve() {}
@@ -88,6 +89,9 @@ func (curve *MiraclCurve) OfJsonObj() Curve {
 
 func (curve *MiraclCurve) SetSeed(seed string) Curve {
 	curve.Seed = seed
+	for k := 0; k < curve.RunsCount; k++ {
+		crv.NewFP12rand(curve.rng)
+		}
 	return curve
 }
 
@@ -142,7 +146,7 @@ func (curve *MiraclCurve) NewRandomPointOn(group string) Point {
 		q2 := crv.ECP2_generator()
 		p.p2 = crv.G2mul(q2, x_)
 	case "GT":
-		p.pt = crv.NewFP12rand(curve.rng)
+		p.pt = crv.NewFP12rand(curve.rng); curve.RunsCount += 1
 		buf := make([]byte, 12*crv.MODBYTES)
 		p.pt.ToBytes(buf)
 		log.Info("%s", Encode(string(buf)))

@@ -35,7 +35,7 @@ func InitAbeService(config Config, abeStorage Storage) {
 
 // generate new organization and stores it
 func SetupOrg(orgStr string, lib string, curveStr string, seed string) string {
-	curveJson := fmt.Sprintf("\"name\": %s, \"seed\": %s", curveStr, seed)
+	curveJson := abe.Encode(fmt.Sprintf("{\"name\": \"%s\", \"seed\": \"%s\"}", curveStr, seed))
 	if (lib == "pbc") {
 		curveJson = FetchCurve(curveStr)
 	}

@@ -34,8 +34,8 @@ func InitAbeService(config Config, abeStorage Storage) {
 }
 
 // generate new organization and stores it
-func SetupOrg(orgStr string, lib string, curveStr string) string {
-	curveJson := ""
+func SetupOrg(orgStr string, lib string, curveStr string, seed string) string {
+	curveJson := fmt.Sprintf("\"name\": %s, \"seed\": %s", curveStr, seed)
 	if (lib == "pbc") {
 		curveJson = FetchCurve(curveStr)
 	}
@@ -67,9 +67,9 @@ func SetupUserkey(user string, attr string) string {
 }
 
 // generate new random secret for an organization
-func NewRandomSecret(orgStr string, seed string) string {
+func NewRandomSecret(orgStr string) string {
 	orgJson := FetchOrg(orgStr)
-	secretJson := abe.NewRandomSecretJson(orgJson, seed)
+	secretJson := abe.NewRandomSecretJson(orgJson)
 	return secretJson
 }
 

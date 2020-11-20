@@ -9,8 +9,9 @@ import (
 )
 
 type ArithmeticConf struct {
-  Curve string `yaml:"curve"`
   Library string `yaml:"library"`
+  Curve string `yaml:"curve"`
+  Seed string `yaml:"seed"`
 }
 
 type RedisConf struct {

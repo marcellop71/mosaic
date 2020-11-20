@@ -22,7 +22,8 @@ type Curve interface {
 	isCurve()
 	ToJsonObj() Curve
 	OfJsonObj() Curve
-	InitRng(seed string) Curve
+	SetSeed(seed string) Curve
+	InitRng() Curve
 	NewPointOn(group string) Point
 	NewRandomExp() *big.Int
 	NewRandomSecret(n int, zerosecret bool) []*big.Int
@@ -38,11 +39,6 @@ type Curve interface {
 	Pow3(g1 Point, e1 *big.Int, g2 Point, e2 *big.Int, g3 Point, e3 *big.Int) Point
 	Pair(g1 Point, g2 Point) Point
 	ProdPair(g1 []Point, g2 []Point) Point
-}
-
-// randomness source
-type RandomSource struct {
-	Seed string `json:"seed"`
 }
 
 // organization

@@ -1,7 +1,8 @@
 config:
   arithmetic:
-    curve: BN254
     library: miracl
+    curve: BN254
+    seed: abcdef
   storage:
     redis:
       local0:

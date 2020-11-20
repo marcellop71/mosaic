@@ -20,11 +20,9 @@ func main() {
 	service.InitAbeService(config, nil)
 
 	lib := "miracl"
-	curve := config.Arithmetic.Curve
-
 	org := "org0"
-	service.SetupOrg(org, lib, curve)
-	log.Info("set up organization %s on curve %s", org, curve)
+	service.SetupOrg(org, lib, config.Arithmetic.Curve, config.Arithmetic.Seed)
+	log.Info("set up organization %s on curve %s", org, config.Arithmetic.Curve)
 
 	auths := []string{"auth0", "auth1"}
 	for _, auth := range auths {
@@ -51,8 +49,7 @@ func main() {
 		log.Info("policy: %s", policy)
 		if abe.CheckPolicy(policy, nil) == "sat" {
 			// ecnrypting
-			seed := ""
-			secretJson := service.NewRandomSecret(org, seed)
+			secretJson := service.NewRandomSecret(org)
 			secret := abe.NewPointOfJsonStr(secretJson).GetP()
 			secret_hash := sha256.Sum256([]byte(secret))
 			log.Info("secret hash: %s", abe.Encode(string(secret_hash[:])))

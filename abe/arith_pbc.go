@@ -76,7 +76,12 @@ func (curve *PbcCurve) OfJsonObj() Curve {
 	return curve
 }
 
-func (curve *PbcCurve) InitRng(seed string) Curve {
+func (curve *PbcCurve) SetSeed(seed string) Curve {
+	curve.Seed = seed
+	return curve
+}
+
+func (curve *PbcCurve) InitRng() Curve {
 	return curve
 }
 

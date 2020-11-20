@@ -8,9 +8,9 @@ import (
 func main() {
 	log.Init("Info")
 
-	curve := abe.NewCurve()
 	seed := "abcdef"
-	curve.InitRng(seed)
+	curve := abe.NewCurve()
+	curve.SetSeed(seed).InitRng()
 	org := abe.NewRandomOrg(curve)
 	authkeys := abe.NewRandomAuth(org)
 	user := "marcello.paris@gmail.com"

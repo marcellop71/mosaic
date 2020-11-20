@@ -8,7 +8,7 @@
 The code is for demonstration purposes only and it is not suitable
 for embedding in any reliable cryptographic solutions.
 A quantity of structure which should be needed in any reliable cryptographic solution is missing in the code base
-(about randomness, hashing functions used, selection of curve and pairings and underlying cryptographic library,
+(about randomness, hashing functions used, selection of curves and pairings and underlying cryptographic library, hash-to-groups primitives,
 secure communication, in-memory management of cryptographic calculations and many other issues).
 Moreover, the code is not fully tested (nor formally verified),
 nor yet implementing any reliable error management procedure and
@@ -16,7 +16,7 @@ should not be used in production environments.
 
 The library is under the copyleft license [AGPL-3.0](https://choosealicense.com/licenses/agpl-3.0/).
 
-__library is under active development (APIs are subject to change) please check for updates__
+__library is under development (APIs are subject to change) please check for updates__
 
 - [Attribute Based Encryption](#attribute-based-encryption)
 - [The scheme implemented](#the-scheme-implemented)
@@ -339,4 +339,4 @@ Let the pairing be G1 x G2 -> GT
 
 The scheme encrypts a point in GT as:
 - a point on GT (the point to be encrypted perturbed by a secret)
-- a bags of 4-points tuples (point on GT, point on G1, point on G1, point on G2) [one tuple for each attribute-leave in the policy]
+- a bags of 4-points tuples (i.e., bag of points on GT x G1 x G1 x G2) [one tuple for each attribute-leave in the policy]

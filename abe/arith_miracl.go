@@ -70,9 +70,9 @@ func (p *MiraclPoint) OfJsonObj(curve Curve) Point {
 
 // curve on miracl library
 type MiraclCurve struct {
-	Name string `json:"name"`
-	seed string `json:"seed"`
 	rng *core.RAND
+	Name string `json:"name"`
+	Seed string `json:"seed"`
 }
 
 func (curve *MiraclCurve) isCurve() {}
@@ -82,13 +82,18 @@ func (curve *MiraclCurve) ToJsonObj() Curve {
 }
 
 func (curve *MiraclCurve) OfJsonObj() Curve {
+	curve.InitRng()
 	return curve
 }
 
-func (curve *MiraclCurve) InitRng(seed string) Curve {
-	curve.seed = seed
+func (curve *MiraclCurve) SetSeed(seed string) Curve {
+	curve.Seed = seed
+	return curve
+}
+
+func (curve *MiraclCurve) InitRng() Curve {
 	curve.rng = core.NewRAND()
-	hseed := sha256.Sum256([]byte(curve.seed))
+	hseed := sha256.Sum256([]byte(curve.Seed))
 	curve.rng.Seed(32, hseed[:])
 	return curve
 }

@@ -254,8 +254,9 @@ Details in the configuration file __./examples/config.yaml__
 ```yaml
 config:
   arithmetic:
+		library: miracl
     curve: BN254
-    library: miracl
+    seed: abcdef
   storage:
     redis:
       local0:
@@ -291,8 +292,8 @@ now if a user needs to access the document:
 ### Setup curve, organization and authorities
 
 ```go
-service.SetupOrg("org0", "miracl", "BN254")   // setting up an organization (hosting a set of authorities) onto a given curve
-service.SetupAuth("auth0", "org0")  // setting up an authority into a given organization
+service.SetupOrg("org0", "miracl", "BN254", seed) // setting up an organization (hosting a set of authorities) onto a given curve
+service.SetupAuth("auth0", "org0")  							// setting up an authority into a given organization
 ```
 
 ### Using boolean policies

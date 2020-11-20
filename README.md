@@ -301,10 +301,10 @@ service.SetupAuth("auth0", "org0")  // setting up an authority into a given orga
 policy := "A@auth0 /\\ (B@auth0 /\\ (C@auth0 \\/ D@auth0))" // a policy as a standard boolean expression
 
 // encrypting
-secret := service.NewRandomSecret("org0", seed)  // create a new secret
-policy = abe.RewritePolicy(policy)               // simplify policy
-auths := abe.AuthPubsOfPolicyJson(policy)      // extracts authorities mentioned in the policy
-auths = service.FetchAuthPubs(auths)             // collects public keys of those authorities
+secret := service.NewRandomSecret("org0")  				   // create a new secret
+policy = abe.RewritePolicy(policy)               	   // simplify policy
+auths := abe.AuthPubsOfPolicyJson(policy)      		   // extracts authorities mentioned in the policy
+auths = service.FetchAuthPubs(auths)             		 // collects public keys of those authorities
 secret_enc := abe.EncryptJson(secret, policy, auths) // encrypts the secret into a ciphertext
 
 // user asking for keys
@@ -315,10 +315,10 @@ service.SetupUserkey(user, "C@auth0") // for the user creates a key correspondin
 service.SetupUserkey(user, "D@auth0") // for the user creates a key corresponding to the given attribute
 
 // decrypting
-policy = abe.PolicyOfCiphertextJson(secret_enc)     // extract the policy embedded in the ciphertext
-userattrs := service.FetchUserAttrs(user)                // collects the available user attributes
+policy = abe.PolicyOfCiphertextJson(secret_enc)              // extract the policy embedded in the ciphertext
+userattrs := service.FetchUserAttrs(user)                    // collects the available user attributes
 userattrs = abe.SelectUserAttrsJson(user, policy, userattrs) // select which user attributes (if any) are useful for the given policy
-userattrs = service.FetchUserkeys(userattrs)             // collects user keys corresponding to the useful attributes
+userattrs = service.FetchUserkeys(userattrs)                 // collects user keys corresponding to the useful attributes
 secret_dec := abe.DecryptJson(secret_enc, userattrs)         // decrypts the ciphertext into the secret plaintext
 ```
 
